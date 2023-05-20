@@ -2,13 +2,6 @@ import numpy as np
 
 np.random.seed(0)
 
-# Input Set
-X = [
-    [1, 2, 3, 2.5],
-    [2.0, 5.0, -1.0, 2.0],
-    [-1.5, 2.7, 3.3, -0.8]
-] # shape: 3,4,1
-
 def create_data(points, classes):
     # np.random.seed(0) # set seed for reproducibility
 
@@ -52,6 +45,12 @@ class Activation_ReLU:
         # ReLU activation: f(x) = max(0, x)
         self.output = np.maximum(0, inputs)
 
+class Activation_Softmax:
+    def forward(self, inputs):
+        exp_values = np.exp(inputs - np.max(inputs, axis=1, keepdims=True))
+        probabilities = exp_values / np.sum(exp_values, axis=1, keepdims=True)
+
+        self.output = probabilities
 
 
 # Create the layers, prev neurons = next inputs
@@ -60,10 +59,10 @@ class Activation_ReLU:
 # hidden layer = 4 inputs, 5 neurons
 # output layer = 5 inputs, 2 neurons
 
-layer1 = Layer_Dense(2, 5)
+X, y = create_data(100, 3)
+
+dense1 = Layer_Dense(2, 3)
 activation1 = Activation_ReLU()
 
-layer1.forward(X)
-activation1.forward(layer1.output)
-print(activation1.output)
-
+dense2 = Layer_Dense(3, 3)
+activation2 = Activation_Softmax()
