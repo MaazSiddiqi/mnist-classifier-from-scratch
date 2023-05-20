@@ -60,13 +60,10 @@ class Activation_ReLU:
 # hidden layer = 4 inputs, 5 neurons
 # output layer = 5 inputs, 2 neurons
 
-layer1 = Layer_Dense(4, 5)
-layer2 = Layer_Dense(5, 2)
+layer1 = Layer_Dense(2, 5)
+activation1 = Activation_ReLU()
 
 layer1.forward(X)
+activation1.forward(layer1.output)
+print(activation1.output)
 
-# print(layer1.output)
-
-layer2.forward(layer1.output)
-
-print(layer2.output)
