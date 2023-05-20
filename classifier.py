@@ -8,8 +8,8 @@ weights = [
     [-0.26, -0.27, 0.17, 0.87]
 ] # shape: 3,4
 
-biases = [ 2, 3, 0.5 ]
+biases = [ 2, 3, 0.5 ] # shape: 3,1
 
-output = np.dot(weights, inputs) + biases # shape: 3,4 * 4,1 = 3,1
+output = np.dot(weights, inputs) + biases # shape: (3,4 * 4,1) + 3,1 = 3,1 + 3,1 = 3,1
 
 print(output)
