@@ -29,6 +29,13 @@ class Layer_Dense:
         pass
 
 
+class Activation_ReLU:
+    def forward(self, inputs):
+        # ReLU activation: f(x) = max(0, x)
+        self.output = np.maximum(0, inputs)
+
+
+
 # Create the layers, prev neurons = next inputs
 
 # input layer = X = 3 inputs, 4 neurons
