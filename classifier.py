@@ -47,7 +47,11 @@ class Activation_ReLU:
 
 class Activation_Softmax:
     def forward(self, inputs):
+        # Exponentiate to make all values positive without losing relative meaning
+        # Subtract the max value to make the values smaller and prevent overflow, retains relative meaning
         exp_values = np.exp(inputs - np.max(inputs, axis=1, keepdims=True))
+
+        # Normalize the values to be between 0 and 1
         probabilities = exp_values / np.sum(exp_values, axis=1, keepdims=True)
 
         self.output = probabilities
@@ -66,3 +70,11 @@ activation1 = Activation_ReLU()
 
 dense2 = Layer_Dense(3, 3)
 activation2 = Activation_Softmax()
+
+dense1.forward(X)
+activation1.forward(dense1.output)
+
+dense2.forward(activation1.output)
+activation2.forward(dense2.output)
+
+print(activation2.output[:5])
