@@ -2,23 +2,29 @@ import numpy as np
 
 np.random.seed(0)
 
+
 def create_data(points, classes):
     # np.random.seed(0) # set seed for reproducibility
 
     # create data and labels
-    X = np.zeros((points * classes, 2)) # data matrix (each row = single example)
-    y = np.zeros(points * classes, dtype='uint8') # class labels
+    X = np.zeros((points * classes, 2))  # data matrix (each row = single example)
+    y = np.zeros(points * classes, dtype="uint8")  # class labels
 
     for class_number in range(classes):
         ix = range(points * class_number, points * (class_number + 1))
-        r = np.linspace(0.0, 1, points) # radius
-        t = np.linspace(class_number * 4, (class_number + 1) * 4, points) + np.random.randn(points) * 0.2 # theta
+        r = np.linspace(0.0, 1, points)  # radius
+        t = (
+            np.linspace(class_number * 4, (class_number + 1) * 4, points)
+            + np.random.randn(points) * 0.2
+        )  # theta
         X[ix] = np.c_[r * np.sin(t * 2.5), r * np.cos(t * 2.5)]
         y[ix] = class_number
 
     return X, y
 
+
 X, y = create_data(100, 3)
+
 
 class Layer_Dense:
     # initialize the weights and biases
@@ -39,11 +45,23 @@ class Layer_Dense:
         self.output = np.dot(inputs, self.weights) + self.biases
         pass
 
+    def backward(self, output_gradient, learning_rate):
+        weights_gradient = np.dot(self.inputs.T, output_gradient)
+        self.weights -= learning_rate * weights_gradient
+        self.biases -= learning_rate * np.sum(output_gradient, axis=0, keepdims=True)
+
+        return np.dot(output_gradient, self.weights.T)
+
 
 class Activation_ReLU:
     def forward(self, inputs):
         # ReLU activation: f(x) = max(0, x)
         self.output = np.maximum(0, inputs)
+
+    def backward(self, output_gradient):
+        # ReLU derivative: f'(x) = 1 if x > 0, otherwise 0
+        # return np.multiply(output_gradient, np.heaviside(self.output, 0))
+
 
 class Activation_Softmax:
     def forward(self, inputs):
@@ -67,20 +85,22 @@ class Loss:
 
         return data_loss
 
+
 class Loss_CategoricalCrossentropy(Loss):
     def forward(self, y_pred, y_true):
         samples = len(y_pred)
         y_pred_clipped = np.clip(y_pred, 1e-7, 1 - 1e-7)
 
-        if (len(y_true.shape) == 1):
+        if len(y_true.shape) == 1:
             # Passed in scalars
             correct_confidences = y_pred_clipped[range(samples), y_true]
-        elif (len(y_true.shape) == 2):
+        elif len(y_true.shape) == 2:
             # Passed in one-hot vectors
             correct_confidences = np.sum(y_pred_clipped * y_true, axis=1)
 
         negative_log_likelihoods = -np.log(correct_confidences)
         return negative_log_likelihoods
+
 
 # Create the layers, prev neurons = next inputs
 
@@ -107,4 +127,4 @@ print(activation2.output[:5])
 loss_function = Loss_CategoricalCrossentropy()
 loss = loss_function.calculate(activation2.output, y)
 
-print('Loss:', loss)
+print("Loss:", loss)
