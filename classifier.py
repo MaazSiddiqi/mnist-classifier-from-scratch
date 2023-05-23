@@ -42,8 +42,12 @@ class Layer_Dense:
         pass
 
     def forward(self, inputs):
+        # save the inputs for later use in backpropagation
+        self.inputs = inputs
+
+        # calculate the output values from inputs, weights, and biases
         self.output = np.dot(inputs, self.weights) + self.biases
-        pass
+        return self.output
 
     def backward(self, output_gradient, learning_rate):
         weights_gradient = np.dot(self.inputs.T, output_gradient)
