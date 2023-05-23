@@ -101,6 +101,9 @@ class Loss_CategoricalCrossentropy(Loss):
         negative_log_likelihoods = -np.log(correct_confidences)
         return negative_log_likelihoods
 
+class Loss_MeanSquaredError(Loss):
+    def forward(self, y_pred, y_true):
+        return np.mean(np.power(y_true - y_pred, 2))
 
 # Create the layers, prev neurons = next inputs
 
