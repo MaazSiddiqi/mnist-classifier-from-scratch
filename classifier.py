@@ -65,13 +65,16 @@ class Layer_Dense:
 
 class Activation_ReLU:
     def forward(self, inputs):
+        # save the inputs for later use in backpropagation
+        self.inputs = inputs
+
         # ReLU activation: f(x) = max(0, x)
+        # ReLU derivative: f'(x) = 1 if x > 0, otherwise 0
         self.output = np.maximum(0, inputs)
+        self.derivative = lambda x: 1 if x > 0 else 0
 
     def backward(self, output_gradient):
-        # ReLU derivative: f'(x) = 1 if x > 0, otherwise 0
-        # return np.multiply(output_gradient, np.heaviside(self.output, 0))
-        pass
+        return np.multiply(output_gradient, self.derivative(self.inputs))
 
 
 class Activation_Softmax:
@@ -115,7 +118,14 @@ class Loss_CategoricalCrossentropy(Loss):
 
 class Loss_MeanSquaredError(Loss):
     def forward(self, y_pred, y_true):
+        # Calculate loss
+        # E = 1/n * sum((y_true - y_pred)^2)
         return np.mean(np.power(y_true - y_pred, 2))
+
+    def backward(self, y_pred, y_true):
+        # Calculate gradient
+        # dE/dy_pred = 2 * (y_pred - y_true) / n
+        return 2 * (y_pred - y_true) / np.size(y_true)
 
 
 # Create the layers, prev neurons = next inputs
