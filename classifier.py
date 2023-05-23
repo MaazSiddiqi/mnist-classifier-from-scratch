@@ -61,6 +61,7 @@ class Activation_ReLU:
     def backward(self, output_gradient):
         # ReLU derivative: f'(x) = 1 if x > 0, otherwise 0
         # return np.multiply(output_gradient, np.heaviside(self.output, 0))
+        pass
 
 
 class Activation_Softmax:
@@ -101,9 +102,11 @@ class Loss_CategoricalCrossentropy(Loss):
         negative_log_likelihoods = -np.log(correct_confidences)
         return negative_log_likelihoods
 
+
 class Loss_MeanSquaredError(Loss):
     def forward(self, y_pred, y_true):
         return np.mean(np.power(y_true - y_pred, 2))
+
 
 # Create the layers, prev neurons = next inputs
 
