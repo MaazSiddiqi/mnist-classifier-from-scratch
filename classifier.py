@@ -35,10 +35,10 @@ class Layer_Dense:
 
         # np.random.randn() returns a sample (or samples) from the "standard normal" distribution (mean=0, stdev=1), in shape of (n_inputs, n_neurons)
         # multiply by 0.1 to make the values smaller (closer to 0)
-        self.weights = 0.1 * np.random.randn(n_inputs, n_neurons)
+        self.weights = 0.1 * np.random.randn(n_neurons, n_inputs)
 
         # np.zeros() returns a new array of given shape, filled with zeros
-        self.biases = np.zeros((1, n_neurons))
+        self.biases = np.zeros((n_neurons, 1))
         pass
 
     def forward(self, inputs):
@@ -46,15 +46,21 @@ class Layer_Dense:
         self.inputs = inputs
 
         # calculate the output values from inputs, weights, and biases
-        self.output = np.dot(inputs, self.weights) + self.biases
+        self.output = np.dot(self.weights, inputs) + self.biases
         return self.output
 
     def backward(self, output_gradient, learning_rate):
-        weights_gradient = np.dot(self.inputs.T, output_gradient)
-        self.weights -= learning_rate * weights_gradient
-        self.biases -= learning_rate * np.sum(output_gradient, axis=0, keepdims=True)
+        # calculate the gradient of weights, biases, and inputs
 
-        return np.dot(output_gradient, self.weights.T)
+        # gradient of weights = output gradient * inputs
+        weights_gradient = np.dot(output_gradient, self.inputs.T)
+        self.weights -= learning_rate * weights_gradient
+
+        # gradient of biases = output gradient
+        self.biases -= learning_rate * output_gradient
+
+        # gradient of inputs = weights * output gradient
+        return np.dot(self.weights.T, output_gradient)
 
 
 class Activation_ReLU:
