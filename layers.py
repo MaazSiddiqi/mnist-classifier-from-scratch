@@ -45,17 +45,19 @@ class Dense(Layer):
         # dC/db = dC/dy
         bias_gradient = outputs_gradient
 
-        # adjust weights and biases according to gradient
-        self.weights -= learning_rate * weights_gradient
-        self.biases -= learning_rate * bias_gradient
-
         # dC/dx = dy/dx * dC/dy
         # dy/dx = W => (j x i) matrix
         # dC/dy = outputs_gradient => (j x 1) vector
         # dC/dx = W.T * outputs_gradient => (i x j) * (j x 1) = (i x 1)
         # want to get (i x 1) since recursion expects a (j x 1) vector
         # i of this layer = j of previous layer
-        return np.dot(self.weights.T, outputs_gradient)
+        input_gradient = np.dot(self.weights.T, outputs_gradient)
+
+        # adjust weights and biases according to gradient
+        self.weights -= learning_rate * weights_gradient
+        self.biases -= learning_rate * bias_gradient
+
+        return input_gradient
 
 
 class Activation_Layer(Layer):
