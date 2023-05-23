@@ -1,30 +1,5 @@
 import numpy as np
 
-np.random.seed(0)
-
-
-def create_data(points, classes):
-    # np.random.seed(0) # set seed for reproducibility
-
-    # create data and labels
-    X = np.zeros((points * classes, 2))  # data matrix (each row = single example)
-    y = np.zeros(points * classes, dtype="uint8")  # class labels
-
-    for class_number in range(classes):
-        ix = range(points * class_number, points * (class_number + 1))
-        r = np.linspace(0.0, 1, points)  # radius
-        t = (
-            np.linspace(class_number * 4, (class_number + 1) * 4, points)
-            + np.random.randn(points) * 0.2
-        )  # theta
-        X[ix] = np.c_[r * np.sin(t * 2.5), r * np.cos(t * 2.5)]
-        y[ix] = class_number
-
-    return X, y
-
-
-X, y = create_data(100, 3)
-
 
 class Layer_Dense:
     # initialize the weights and biases
@@ -74,6 +49,8 @@ class Activation_ReLU:
         self.derivative = lambda x: 1 if x > 0 else 0
 
     def backward(self, output_gradient):
+        # calculate the gradient of inputs
+        # gradient of inputs = output gradient * derivative of inputs
         return np.multiply(output_gradient, self.derivative(self.inputs))
 
 
@@ -87,6 +64,9 @@ class Activation_Softmax:
         probabilities = exp_values / np.sum(exp_values, axis=1, keepdims=True)
 
         self.output = probabilities
+
+    def backward(self, output_gradient):
+        pass
 
 
 class Loss:
@@ -133,24 +113,3 @@ class Loss_MeanSquaredError(Loss):
 # input layer = X = 3 inputs, 4 neurons
 # hidden layer = 4 inputs, 5 neurons
 # output layer = 5 inputs, 2 neurons
-
-X, y = create_data(100, 3)
-
-dense1 = Layer_Dense(2, 3)
-activation1 = Activation_ReLU()
-
-dense2 = Layer_Dense(3, 3)
-activation2 = Activation_Softmax()
-
-dense1.forward(X)
-activation1.forward(dense1.output)
-
-dense2.forward(activation1.output)
-activation2.forward(dense2.output)
-
-print(activation2.output[:5])
-
-loss_function = Loss_CategoricalCrossentropy()
-loss = loss_function.calculate(activation2.output, y)
-
-print("Loss:", loss)
