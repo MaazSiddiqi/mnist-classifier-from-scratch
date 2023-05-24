@@ -42,6 +42,8 @@ class Network:
             if log:
                 print(f"{epoch + 1}/{epochs}, error={error}")
 
+            return error
+
     def test(self, x_test, y_test):
         correct = 0
         for x, y in zip(x_test, y_test):
@@ -51,3 +53,5 @@ class Network:
                 correct += 1
 
         print(f"Test accuracy: {correct / len(x_test)}")
+
+        return correct / len(x_test)
