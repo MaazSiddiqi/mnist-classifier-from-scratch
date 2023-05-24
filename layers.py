@@ -99,3 +99,18 @@ class Tanh_Activation(Activation_Layer):
         tanh = Hyperbolic_Tangent()
 
         super().__init__(tanh.activate, tanh.activate_prime)
+
+
+class Softmax_Activation(Activation_Layer):
+    def __init__(self) -> None:
+        pass
+
+    def forward(self, inputs):
+        self.outputs = np.exp(inputs) / np.sum(np.exp(inputs), axis=0)
+        return self.outputs
+
+    def backward(self, outputs_gradient, learning_rate):
+        return np.dot(
+            (np.identity(np.size(self.outputs)) - self.output.T) * self.output,
+            outputs_gradient,
+        )
