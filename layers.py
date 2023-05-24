@@ -110,7 +110,9 @@ class Softmax_Activation(Activation_Layer):
         return self.outputs
 
     def backward(self, outputs_gradient, learning_rate):
-        return np.dot(
-            (np.identity(np.size(self.outputs)) - self.output.T) * self.output,
-            outputs_gradient,
-        )
+        # dC/dx = M * (I - M.T) (dot) dC/dy
+        # M = np.tile(self.outputs, np.size(self.outputs)) => (n x n) matrix of repeated column vectors of outputs
+        n = np.size(self.outputs)
+        M = np.tile(self.outputs, n)
+
+        return np.dot(M * (np.identity(n) - M.T), outputs_gradient)
