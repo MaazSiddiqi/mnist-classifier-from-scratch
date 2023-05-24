@@ -23,3 +23,11 @@ class Hyperbolic_Tangent(Activation):
 
     def activate_prime(self, x) -> int:
         return 1 - np.tanh(x) ** 2
+
+
+class Sigmoid(Activation):
+    def activate(self, x) -> int:
+        return 1 / (1 + np.exp(-x))
+
+    def activate_prime(self, x) -> int:
+        return self.activate(x) * (1 - self.activate(x))
