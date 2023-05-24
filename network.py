@@ -1,5 +1,3 @@
-from layers import Layer
-from loss import Loss
 import numpy as np
 
 
@@ -29,8 +27,7 @@ class Network:
 
             for x, y in zip(x_train, y_train):
                 # Forward Propagation
-                outputs = x
-                outputs = self.predict(outputs)
+                outputs = self.predict(x)
 
                 # Calculate error
                 error += self.loss_func.calculate(outputs, y)
@@ -48,8 +45,7 @@ class Network:
     def test(self, x_test, y_test):
         correct = 0
         for x, y in zip(x_test, y_test):
-            outputs = x
-            outputs = self.predict(outputs)
+            outputs = self.predict(x)
 
             if np.argmax(outputs) == np.argmax(y):
                 correct += 1
