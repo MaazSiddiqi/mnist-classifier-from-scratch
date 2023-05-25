@@ -74,7 +74,7 @@ class MnistDataloader(object):
         # Convert Y to one-hot encoding of size 10 (number of classes)
         # and make it column vector as expected by network
         Y = np.eye(10)[Y]
-        Y = Y.reshape(Y.shape[0], 10, 1)
+        Y = Y.reshape(Y.shape[0], 10)
 
         # Limit data if needed
         if limit is not None:
