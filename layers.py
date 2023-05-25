@@ -111,7 +111,7 @@ class Softmax_Activation(Activation_Layer):
         pass
 
     def forward(self, inputs):
-        self.outputs = np.exp(inputs) / np.sum(np.exp(inputs))
+        self.outputs = np.exp(inputs) / np.sum(np.exp(inputs), axis=0)
         return self.outputs
 
     def backward(self, outputs_gradient, learning_rate):
