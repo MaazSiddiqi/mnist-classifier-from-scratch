@@ -3,7 +3,7 @@
 #
 from os.path import join
 from mnist_loader import MnistDataloader
-from layers import Dense, ReLU_Activation, Softmax_Activation
+from layers import Dense, ReLU_Activation, Softmax_Activation, Tanh_Activation
 from network import Network
 from loss import Mean_Squared_Error
 import numpy as np
@@ -52,7 +52,7 @@ network_layers = [
 mse = Mean_Squared_Error()
 network = Network(network_layers, mse)
 
-error = network.train(x_train, y_train, epochs=100, learning_rate=0.01, log=True)
+error = network.train(x_train, y_train, epochs=1000, learning_rate=0.01, log=True)
 accuracy = network.test(x_test, y_test)
 
 print(f"Error: {error}")
