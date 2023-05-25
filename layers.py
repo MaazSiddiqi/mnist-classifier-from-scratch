@@ -38,7 +38,12 @@ class Dense(Layer):
         # outputs_gradient = dC/dy => (j x 1) vector
         # X = dy/dw => (i x 1)
         # dC/dw = outputs_gradient * X.T => (j x 1) * (1 x i) = (j x i) matrix
-        weights_gradient = np.dot(outputs_gradient, self.inputs.T)
+
+        # format 1d arrays as 2d arrays so transpose works
+        _outputs_gradient = outputs_gradient.reshape(-1, 1)
+        _inputs = self.inputs.reshape(-1, 1)
+
+        weights_gradient = np.dot(_outputs_gradient, _inputs.T)
 
         # dC/db = dy/db * dC/dy
         # dy/db = 1 => b is a constant
@@ -106,7 +111,7 @@ class Softmax_Activation(Activation_Layer):
         pass
 
     def forward(self, inputs):
-        self.outputs = np.exp(inputs) / np.sum(np.exp(inputs), axis=0)
+        self.outputs = np.exp(inputs) / np.sum(np.exp(inputs))
         return self.outputs
 
     def backward(self, outputs_gradient, learning_rate):
