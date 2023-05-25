@@ -19,7 +19,7 @@ class Dense(Layer):
         self.weights = np.random.randn(outputs_size, inputs_size)
 
         # Initialize biases to 0s in a (j x 1) vector B
-        self.biases = np.zeros((outputs_size, 1))
+        self.biases = np.zeros(outputs_size)
 
         super().__init__()
 
@@ -111,7 +111,7 @@ class Softmax_Activation(Activation_Layer):
         pass
 
     def forward(self, inputs):
-        self.outputs = np.exp(inputs) / np.sum(np.exp(inputs), axis=0)
+        self.outputs = np.exp(inputs) / np.sum(np.exp(inputs))
         return self.outputs
 
     def backward(self, outputs_gradient, learning_rate):
