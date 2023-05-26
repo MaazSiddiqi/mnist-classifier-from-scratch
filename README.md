@@ -2,7 +2,7 @@
 
 A from-scratch implementation of a multi-layer, densely connected neural network that can classify handwritten images of numbers. Trained on the MNIST dataset with no external AI library dependencies!
 
-After testing, the best accuracy this model produced was 95% (epochs=1000, learning_rate=0.01)!
+**After testing, the best accuracy this model produced was 95% (epochs=1000, learning_rate=0.01)!**
 
 ## How to Run
 
@@ -65,4 +65,48 @@ To test the model, call the `test` method on the network object. The `test` meth
 
 ```python
 accuracy = network.test(test_data, test_labels)
+```
+
+You can also sanity check the model is working properly by using the `xor_test.py` script.
+
+### The Data
+
+The model is trained on the MNIST dataset, which contains 60,000 images of handwritten numbers (0-9) and their corresponding labels. The dataset is split into 50,000 training images and 10,000 testing images. The images are 28x28 pixels, and are flattened into a 784x1 vector. The labels are one-hot encoded into a 10x1 vector.
+
+The dataset is loaded using the `MnistDataLoader` class in `mnist_loader.py`, provided by Kaggle.
+
+Initialize the loader with the paths to the training and testing data. The data is then loaded using the `load_data` method, then processed into correct format using the `process_data` method.
+
+```python
+#
+# Set file paths based on added MNIST Datasets
+#
+input_path = "./dataset"
+training_images_filepath = join(
+    input_path, "train-images-idx3-ubyte/train-images-idx3-ubyte"
+)
+training_labels_filepath = join(
+    input_path, "train-labels-idx1-ubyte/train-labels-idx1-ubyte"
+)
+test_images_filepath = join(input_path, "t10k-images-idx3-ubyte/t10k-images-idx3-ubyte")
+test_labels_filepath = join(input_path, "t10k-labels-idx1-ubyte/t10k-labels-idx1-ubyte")
+
+
+#
+# Load MINST dataset
+#
+mnist_dataloader = MnistDataloader(
+    training_images_filepath,
+    training_labels_filepath,
+    test_images_filepath,
+    test_labels_filepath,
+)
+
+# Load training and test data
+(x_train, y_train), (x_test, y_test) = mnist_dataloader.load_data()
+
+
+# Process data to correct shapes for network
+x_train, y_train = mnist_dataloader.process_data(x_train, y_train, 1000)
+x_test, y_test = mnist_dataloader.process_data(x_test, y_test, 20)
 ```
