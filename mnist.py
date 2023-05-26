@@ -8,8 +8,6 @@ from network import Network
 from loss import Mean_Squared_Error
 import numpy as np
 
-np.seterr(all="raise")
-
 #
 # Set file paths based on added MNIST Datasets
 #
