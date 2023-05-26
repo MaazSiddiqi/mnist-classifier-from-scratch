@@ -52,7 +52,7 @@ network_layers = [
 mse = Mean_Squared_Error()
 network = Network(network_layers, mse)
 
-error = network.train(x_train, y_train, epochs=500, learning_rate=0.01, log=True)
+network.train(x_train, y_train, epochs=500, learning_rate=0.01, log=True)
 accuracy = network.test(x_test, y_test)
 
 print(f"Accuracy: {accuracy}")
