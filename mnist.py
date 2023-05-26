@@ -42,16 +42,7 @@ mnist_dataloader = MnistDataloader(
 x_train, y_train = mnist_dataloader.process_data(x_train, y_train, 1000)
 x_test, y_test = mnist_dataloader.process_data(x_test, y_test, 20)
 
-# # Create network
-# network_layers = [
-#     Dense(784, 128),
-#     ReLU_Activation(),
-#     Dense(128, 64),
-#     ReLU_Activation(),
-#     Dense(64, 10),
-#     Softmax_Activation(),
-# ]
-
+# Create network
 network_layers = [
     Dense(784, 128, initializer_scale=2),
     ReLU_Activation(),
@@ -63,7 +54,6 @@ network_layers = [
 mse = Mean_Squared_Error()
 network = Network(network_layers, mse)
 
-# error = network.train(x_train[:1], y_train[:1], epochs=2, learning_rate=0.01, log=True)
 error = network.train(x_train, y_train, epochs=500, learning_rate=0.01, log=True)
 accuracy = network.test(x_test, y_test)
 
