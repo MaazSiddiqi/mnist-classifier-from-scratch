@@ -40,9 +40,11 @@ class Network:
             error /= len(x_train)
 
             if log:
-                print(f"{epoch + 1}/{epochs}, error={error}")
+                print(
+                    f"{epoch + 1}/{epochs}, error={error} learning_rate={learning_rate}"
+                )
 
-    def test(self, x_test, y_test):
+    def test(self, x_test, y_test, log=False):
         correct = 0
         for x, y in zip(x_test, y_test):
             outputs = self.predict(x)
@@ -50,6 +52,7 @@ class Network:
             if np.argmax(outputs) == np.argmax(y):
                 correct += 1
 
-        print(f"Test accuracy: {correct / len(x_test)}")
+        if log:
+            print(f"Test accuracy: {correct / len(x_test)}")
 
         return correct / len(x_test)
