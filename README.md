@@ -7,7 +7,7 @@ A from-scratch implementation of a multi-layer, densely connected neural network
 ## How to Run
 
 1. Clone this repository
-2. Configure network architecture, epochs, and leraning rate in `main.py`
+2. Configure network architecture, epochs, and learning rate in `main.py`
 3. Run `python3 main.py` in the root directory of this repository
 
 ## How it Works
