@@ -13,10 +13,16 @@ class Layer:
 class Dense(Layer):
     # Optimizer = Gradient Descent
 
-    def __init__(self, inputs_size, outputs_size) -> None:
+    def __init__(self, inputs_size, outputs_size, initializer_scale=1) -> None:
         # input_size = i, output_size = j = # nuerons
         # Initialize weights to random (j x i) matrix W
-        self.weights = np.random.randn(outputs_size, inputs_size)
+
+        # Using Xavier/Glorot Initialization to reduce variance of weights
+        # Use 2/input_size to scale weights if using ReLU activation function
+        # This initialization is helpful to prevent vanishing gradients
+        self.weights = np.random.randn(outputs_size, inputs_size) * np.sqrt(
+            initializer_scale / inputs_size
+        )
 
         # Initialize biases to 0s in a (j x 1) vector B
         self.biases = np.zeros(outputs_size)
@@ -111,13 +117,15 @@ class Softmax_Activation(Activation_Layer):
         pass
 
     def forward(self, inputs):
-        self.outputs = np.exp(inputs) / np.sum(np.exp(inputs))
+        # subtract max to prevent overflow
+        exp = np.exp(inputs - np.max(inputs))
+        self.outputs = exp / np.sum(exp)
         return self.outputs
 
     def backward(self, outputs_gradient, learning_rate):
         # dC/dx = M * (I - M.T) (dot) dC/dy
         # M = np.tile(self.outputs, np.size(self.outputs)) => (n x n) matrix of repeated column vectors of outputs
         n = np.size(self.outputs)
-        M = np.tile(self.outputs, n)
+        M = np.tile(self.outputs, n).reshape(n, n)
 
         return np.dot(M * (np.identity(n) - M.T), outputs_gradient)
