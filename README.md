@@ -121,7 +121,7 @@ The weights are initialized using a normal distribution with a mean of 0 and a s
 
 The biases are initialized to 0. Can be changed in the future if causing issues.
 
-#### Socastic Gradient Descent
+#### Stochastic Gradient Descent
 
 The weights are updated using gradient descent. The gradients are calculated using backpropagation, which is the process of calculating the gradients of the loss function with respect to the weights and biases using the chain rule. The gradients are then used to update the weights and biases.
 
