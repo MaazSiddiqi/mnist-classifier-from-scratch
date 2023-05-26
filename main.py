@@ -4,8 +4,8 @@
 from os.path import join
 from mnist_loader import MnistDataloader
 from layers import Dense, ReLU_Activation, Softmax_Activation, Tanh_Activation
-from network import Network
 from loss import Mean_Squared_Error
+from network import Network
 import numpy as np
 
 #
