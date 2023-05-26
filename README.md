@@ -136,3 +136,4 @@ The model was trained for 1000 epochs with a learning rate of 0.01. The model ac
 - [ ] Add more activation functions
 - [ ] Add more loss functions
 - [ ] Implement Input Batching
+- [ ] Implement Saving and Loading of Model
