@@ -110,3 +110,29 @@ mnist_dataloader = MnistDataloader(
 x_train, y_train = mnist_dataloader.process_data(x_train, y_train, 1000)
 x_test, y_test = mnist_dataloader.process_data(x_test, y_test, 20)
 ```
+
+### Techniques Used
+
+#### Weight and Bias Initialization
+
+The weights are initialized using the Xavier initialization method, which is a common method used to initialize weights in neural networks and aids in combating vanishing gradients.
+
+The weights are initialized using a normal distribution with a mean of 0 and a standard deviation of `sqrt(1 / input_neurons)`. If the `initializer_scale` parameter is specified, the weights are multiplied by the scale. This is useful as ReLU activation functions are optimiallly initialized with a standard deviation of `sqrt(2 / input_neurons)`, thus `intializer_scale=2` is used.
+
+The biases are initialized to 0. Can be changed in the future if causing issues.
+
+#### Socastic Gradient Descent
+
+The weights are updated using gradient descent. The gradients are calculated using backpropagation, which is the process of calculating the gradients of the loss function with respect to the weights and biases using the chain rule. The gradients are then used to update the weights and biases.
+
+The learning rate is a hyperparameter that controls how much the weights and biases are updated by. A higher learning rate means the weights and biases are updated by a larger amount, and a lower learning rate means the weights and biases are updated by a smaller amount. A learning rate that is too high can cause the model to diverge, and a learning rate that is too low can cause the model to take a long time to converge. The learning rate is a hyperparameter that must be tuned to the specific model.
+
+## Results
+
+The model was trained for 1000 epochs with a learning rate of 0.01. The model achieved an accuracy of 95% on the test set.
+
+## Future Work
+
+- [ ] Add more activation functions
+- [ ] Add more loss functions
+- [ ] Implement Input Batching
